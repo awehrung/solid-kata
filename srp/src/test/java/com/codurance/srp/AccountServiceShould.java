@@ -1,27 +1,22 @@
 package com.codurance.srp;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InOrder;
-import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.refEq;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.inOrder;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceShould {
 
-    private static final int POSITIVE_AMOUNT = 100;
-    private static final int NEGATIVE_AMOUNT = -POSITIVE_AMOUNT;
     private static final LocalDate TODAY = LocalDate.of(2017, 9, 6);
     private static final List<Transaction> TRANSACTIONS = Arrays.asList(
             new Transaction(LocalDate.of(2014, 4, 1), 1000),
@@ -29,51 +24,59 @@ public class AccountServiceShould {
             new Transaction(LocalDate.of(2014, 4, 10), 500)
     );
 
-    @Mock
-    private Clock clock;
-
-    @Mock
-    private TransactionRepository transactionRepository;
-
-    @Mock
-    private Console console;
+    private final MockTransactionRepository transactionRepository = new MockTransactionRepository();
+    private final ToStringConsole console = new ToStringConsole();
 
     private AccountService accountService;
 
     @BeforeEach
     public void setUp() {
-        accountService = new AccountService(transactionRepository, clock, console);
+        Clock clock = mock(Clock.class);
         lenient().doReturn(TODAY).when(clock).today();
+
+        TransactionPrinter transactionPrinter = new TransactionPrinter(console);
+        TransactionBuilder transactionBuilder = new TransactionBuilder(clock);
+        accountService = new AccountService(transactionRepository, transactionPrinter, transactionBuilder);
     }
 
+    @AfterEach
+    public void tearDown() {
+        transactionRepository.clear();
+        console.clear();
+    }
 
     @Test
     public void deposit_amount_into_the_account() {
+        accountService.deposit(100);
 
-        accountService.deposit(POSITIVE_AMOUNT);
-
-        verify(transactionRepository).add(refEq(new Transaction(TODAY, POSITIVE_AMOUNT)));
+        List<Transaction> allTransactions = transactionRepository.all();
+        assertThat(allTransactions).hasSize(1);
+        assertThat(allTransactions.getFirst()).isEqualTo(new Transaction(TODAY, 100));
     }
 
 
     @Test
     public void withdraw_amount_from_the_account() {
+        accountService.withdraw(100);
 
-        accountService.withdraw(POSITIVE_AMOUNT);
-
-        verify(transactionRepository).add(refEq(new Transaction(TODAY, NEGATIVE_AMOUNT)));
+        List<Transaction> allTransactions = transactionRepository.all();
+        assertThat(allTransactions).hasSize(1);
+        assertThat(allTransactions.getFirst()).isEqualTo(new Transaction(TODAY, -100));
     }
 
     @Test
     public void print_statement() {
-        given(transactionRepository.all()).willReturn(TRANSACTIONS);
+        TRANSACTIONS.forEach(transactionRepository::add);
 
-        accountService.printStatement();
+        accountService.printStatements();
 
-        InOrder inOrder = inOrder(console);
-        inOrder.verify(console).printLine("DATE | AMOUNT | BALANCE");
-        inOrder.verify(console).printLine("10/04/2014 | 500.00 | 1400.00");
-        inOrder.verify(console).printLine("02/04/2014 | -100.00 | 900.00");
-        inOrder.verify(console).printLine("01/04/2014 | 1000.00 | 1000.00");
+        assertThat(console.content()).isEqualTo(
+                """
+                        DATE | AMOUNT | BALANCE
+                        10/04/2014 | 500.00 | 1400.00
+                        02/04/2014 | -100.00 | 900.00
+                        01/04/2014 | 1000.00 | 1000.00
+                        """
+        );
     }
 }

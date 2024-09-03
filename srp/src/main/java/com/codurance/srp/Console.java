@@ -1,7 +1,5 @@
 package com.codurance.srp;
 
-public class Console {
-    public void printLine(String line) {
-        System.out.println(line);
-    }
+public interface Console {
+    void printLine(String line);
 }

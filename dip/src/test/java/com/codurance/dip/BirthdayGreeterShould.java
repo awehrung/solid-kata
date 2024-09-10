@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
@@ -23,8 +24,10 @@ public class BirthdayGreeterShould {
 
     @Mock
     private EmployeeRepository employeeRepository;
-    @Mock
-    private Clock clock;
+    @Spy
+    private Clock clock = new FakeClock(TODAY);
+    @Spy
+    private EmailSender emailSender = new SystemOutEmailSender();
 
     @InjectMocks
     private BirthdayGreeter birthdayGreeter;
@@ -34,18 +37,14 @@ public class BirthdayGreeterShould {
     @Test
     public void should_send_greeting_email_to_employee() {
         System.setOut(new PrintStream(consoleContent));
-        given(clock.monthDay()).willReturn(TODAY);
         Employee employee = anEmployee().build();
-        given(employeeRepository.findEmployeesBornOn(MonthDay.of(
-                CURRENT_MONTH,
-                CURRENT_DAY_OF_MONTH
-        ))).willReturn(Collections.singletonList(employee));
+        given(employeeRepository.findEmployeesBornOn(TODAY)).willReturn(Collections.singletonList(employee));
 
         birthdayGreeter.sendGreetings();
 
         assertThat(consoleContent.toString()).isEqualTo(
                 "To: %s, Subject: Happy birthday!, Message: Happy birthday, dear %s!".formatted(
-                        employee.email(),
+                        employee.emailAddress(),
                         employee.firstName()
                 )
         );

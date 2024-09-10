@@ -6,6 +6,6 @@ public record Employee(
         String firstName,
         String lastName,
         LocalDate dateOfBirth,
-        String email
+        String emailAddress
 ) {
 }

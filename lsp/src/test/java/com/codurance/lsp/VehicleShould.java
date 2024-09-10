@@ -5,40 +5,26 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class VehicleShould {
-  @Test
-  public void start_engine() {
-    Vehicle vehicle = new TestableVehicle();
 
-    vehicle.startEngine();
+    @Test
+    public void start_engine() {
+        Vehicle vehicle = new TestableVehicle();
 
-    assertThat(vehicle.engineIsStarted())
-      .isTrue();
+        vehicle.startEngine();
 
-  }
-
-  @Test
-  public void stop_engine() {
-    Vehicle vehicle = new TestableVehicle();
-
-    vehicle.startEngine();
-    vehicle.stopEngine();
-
-    assertThat(vehicle.engineIsStarted())
-      .isFalse();
-  }
-
-
-  public class TestableVehicle extends Vehicle{
-
-    @Override
-    public void fillUpWithFuel() {
-
+        assertThat(vehicle.engineIsStarted()).isTrue();
     }
 
-    @Override
-    public void chargeBattery() {
+    @Test
+    public void stop_engine() {
+        Vehicle vehicle = new TestableVehicle();
 
+        vehicle.startEngine();
+        vehicle.stopEngine();
+
+        assertThat(vehicle.engineIsStarted()).isFalse();
     }
-  }
 
+    public class TestableVehicle extends Vehicle {
+    }
 }

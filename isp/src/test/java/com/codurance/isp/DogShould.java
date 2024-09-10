@@ -9,7 +9,7 @@ import java.io.PrintStream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class DogShould {
-    private ByteArrayOutputStream consoleContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream consoleContent = new ByteArrayOutputStream();
     private final Dog dog = new Dog();
 
     @BeforeEach
@@ -17,18 +17,15 @@ class DogShould {
         System.setOut(new PrintStream(consoleContent));
     }
 
-
     @Test
     void run() {
         dog.run();
-        assertThat(consoleContent.toString())
-                .isEqualTo("Dog is running");
+        assertThat(consoleContent.toString()).isEqualTo("Dog is running");
     }
 
     @Test
     void bark() {
         dog.bark();
-        assertThat(consoleContent.toString())
-                .isEqualTo("Dog is barking");
+        assertThat(consoleContent.toString()).isEqualTo("Dog is barking");
     }
 }

@@ -6,21 +6,15 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class EmployeeShould {
 
-    private static final int BONUS = 100;
-    private static final int SALARY = 1000;
-
     @Test
     public void not_add_bonus_to_the_engineer_pay_amount() {
-        Employee employee = new Employee(SALARY, BONUS, EmployeeType.ENGINEER);
-        assertThat(employee.payAmount())
-                .isEqualTo(SALARY);
+        Employee engineer = new Engineer(1000);
+        assertThat(engineer.payAmount()).isEqualTo(1000);
     }
-
 
     @Test
     public void add_bonus_to_the_manager_pay_amount() {
-        Employee employee = new Employee(SALARY, BONUS, EmployeeType.MANAGER);
-        assertThat(employee.payAmount())
-                .isEqualTo(SALARY+BONUS);
+        Employee manager = new Manager(1000, 100);
+        assertThat(manager.payAmount()).isEqualTo(1100);
     }
 }

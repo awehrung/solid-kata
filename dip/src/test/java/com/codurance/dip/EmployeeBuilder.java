@@ -1,12 +1,13 @@
 package com.codurance.dip;
 
 import java.time.LocalDate;
+import java.time.Month;
 
 public class EmployeeBuilder {
 
     private String firstName = "John";
     private String lastName = "Doe";
-    private LocalDate dateOfBirth = LocalDate.of(1980, 9, 10);
+    private LocalDate dateOfBirth = LocalDate.of(1980, Month.SEPTEMBER, 10);
     private String email = "john.doe@foobar.com";
 
     public static EmployeeBuilder anEmployee() {

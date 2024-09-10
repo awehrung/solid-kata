@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.time.Month;
 import java.time.MonthDay;
 import java.util.Collections;
 
@@ -18,9 +19,7 @@ import static org.mockito.BDDMockito.given;
 
 @ExtendWith(MockitoExtension.class)
 public class BirthdayGreeterShould {
-    private static final int CURRENT_MONTH = 7;
-    private static final int CURRENT_DAY_OF_MONTH = 9;
-    private static final MonthDay TODAY = MonthDay.of(CURRENT_MONTH, CURRENT_DAY_OF_MONTH);
+    private static final MonthDay TODAY = MonthDay.of(Month.JUNE, 9);
 
     @Mock
     private EmployeeRepository employeeRepository;

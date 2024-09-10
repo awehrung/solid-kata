@@ -29,8 +29,7 @@ public class BirthdayGreeterShould {
     @InjectMocks
     private BirthdayGreeter birthdayGreeter;
 
-
-    private ByteArrayOutputStream consoleContent = new ByteArrayOutputStream();
+    private final ByteArrayOutputStream consoleContent = new ByteArrayOutputStream();
 
     @Test
     public void should_send_greeting_email_to_employee() {
@@ -44,11 +43,11 @@ public class BirthdayGreeterShould {
 
         birthdayGreeter.sendGreetings();
 
-        String actual = consoleContent.toString();
-        assertThat(actual)
-                .isEqualTo("To:" + employee.getEmail() + ", Subject: Happy birthday!, Message: Happy birthday, dear " + employee.getFirstName() + "!");
-
+        assertThat(consoleContent.toString()).isEqualTo(
+                "To: %s, Subject: Happy birthday!, Message: Happy birthday, dear %s!".formatted(
+                        employee.email(),
+                        employee.firstName()
+                )
+        );
     }
-
-
 }

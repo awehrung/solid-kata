@@ -9,7 +9,7 @@ public class EmployeeBuilder {
     private LocalDate dateOfBirth = LocalDate.of(1980, 9, 10);
     private String email = "john.doe@foobar.com";
 
-    public static EmployeeBuilder anEmployee(){
+    public static EmployeeBuilder anEmployee() {
         return new EmployeeBuilder();
     }
 
@@ -34,8 +34,7 @@ public class EmployeeBuilder {
         return this;
     }
 
-    public Employee build(){
+    public Employee build() {
         return new Employee(firstName, lastName, dateOfBirth, email);
     }
-
 }

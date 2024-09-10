@@ -1,27 +1,25 @@
 package com.codurance.dip;
 
+import lombok.RequiredArgsConstructor;
+
 import java.time.MonthDay;
 
+@RequiredArgsConstructor
 public class BirthdayGreeter {
     private final EmployeeRepository employeeRepository;
     private final Clock clock;
-
-    public BirthdayGreeter(EmployeeRepository employeeRepository, Clock clock) {
-        this.employeeRepository = employeeRepository;
-        this.clock = clock;
-    }
 
     public void sendGreetings() {
         MonthDay today = clock.monthDay();
         employeeRepository.findEmployeesBornOn(today)
                 .stream()
-                .map(employee -> emailFor(employee))
+                .map(this::emailFor)
                 .forEach(email -> new EmailSender().send(email));
     }
 
     private Email emailFor(Employee employee) {
-        String message = String.format("Happy birthday, dear %s!", employee.getFirstName());
-        return new Email(employee.getEmail(), "Happy birthday!", message);
+        String message = String.format("Happy birthday, dear %s!", employee.firstName());
+        return new Email(employee.email(), "Happy birthday!", message);
     }
 
 }

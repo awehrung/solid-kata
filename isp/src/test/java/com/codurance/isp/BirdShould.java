@@ -17,18 +17,15 @@ class BirdShould {
         System.setOut(new PrintStream(consoleContent));
     }
 
-
     @Test
     void run() {
         bird.run();
-        assertThat(consoleContent.toString())
-                .isEqualTo("Bird is running");
+        assertThat(consoleContent.toString()).isEqualTo("Bird is running");
     }
 
     @Test
     void fly() {
         bird.fly();
-        assertThat(consoleContent.toString())
-                .isEqualTo("Bird is flying");
+        assertThat(consoleContent.toString()).isEqualTo("Bird is flying");
     }
 }

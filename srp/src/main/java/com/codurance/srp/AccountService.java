@@ -32,7 +32,6 @@ public class AccountService {
         transactionRepository.add(transactionWith(amount));
     }
 
-
     public void withdraw(int amount) {
         transactionRepository.add(transactionWith(-amount));
     }
@@ -42,11 +41,9 @@ public class AccountService {
         printTransactions();
     }
 
-
     private void printHeader() {
         printLine(STATEMENT_HEADER);
     }
-
 
     private void printTransactions() {
         List<Transaction> transactions = transactionRepository.all();
@@ -57,7 +54,6 @@ public class AccountService {
                 .descendingIterator()
                 .forEachRemaining(this::printLine);
     }
-
 
     private Transaction transactionWith(int amount) {
         return new Transaction(clock.today(), amount);
@@ -77,7 +73,6 @@ public class AccountService {
         DecimalFormat decimalFormat = new DecimalFormat(AMOUNT_FORMAT, DecimalFormatSymbols.getInstance(Locale.UK));
         return decimalFormat.format(amount);
     }
-
 
     private void printLine(String line) {
         console.printLine(line);

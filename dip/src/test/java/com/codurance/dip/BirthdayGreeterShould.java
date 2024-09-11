@@ -29,7 +29,6 @@ public class BirthdayGreeterShould {
     @InjectMocks
     private BirthdayGreeter birthdayGreeter;
 
-
     private ByteArrayOutputStream consoleContent = new ByteArrayOutputStream();
 
     @Test
@@ -49,6 +48,4 @@ public class BirthdayGreeterShould {
                 .isEqualTo("To:" + employee.getEmail() + ", Subject: Happy birthday!, Message: Happy birthday, dear " + employee.getFirstName() + "!");
 
     }
-
-
 }

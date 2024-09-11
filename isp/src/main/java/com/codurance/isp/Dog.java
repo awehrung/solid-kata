@@ -3,7 +3,6 @@ package com.codurance.isp;
 public class Dog implements Animal {
     @Override
     public void fly() {
-
     }
 
     @Override

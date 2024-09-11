@@ -49,7 +49,6 @@ public class AccountServiceShould {
 
     @Test
     public void deposit_amount_into_the_account() {
-
         accountService.deposit(POSITIVE_AMOUNT);
 
         verify(transactionRepository).add(refEq(new Transaction(TODAY, POSITIVE_AMOUNT)));
@@ -58,7 +57,6 @@ public class AccountServiceShould {
 
     @Test
     public void withdraw_amount_from_the_account() {
-
         accountService.withdraw(POSITIVE_AMOUNT);
 
         verify(transactionRepository).add(refEq(new Transaction(TODAY, NEGATIVE_AMOUNT)));

@@ -12,7 +12,6 @@ public class VehicleShould {
         vehicle.startEngine();
 
         assertThat(vehicle.engineIsStarted()).isTrue();
-
     }
 
     @Test
@@ -27,11 +26,7 @@ public class VehicleShould {
 
     public class TestableVehicle extends Vehicle {
         @Override
-        public void fillUpWithFuel() {
-        }
-
-        @Override
-        public void chargeBattery() {
+        public void visitFillingStation() {
         }
     }
 }
